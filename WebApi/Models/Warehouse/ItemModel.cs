@@ -14,7 +14,11 @@ namespace WebApi.Models
         public string ItemName { get; set; }
         public int Quantity { get; set; }
         public virtual WarehouseModel Warehouse { get; set; }
-        
+        public virtual RoomModel Room { get; set; }
+        public virtual ColumnModel Column { get; set; }
+        public virtual RackModel Rack { get; set; }
+        public virtual ShelfModel Shelf { get; set; }
+        public virtual PlaceModel Place { get; set; }
 
 
     }

@@ -13,6 +13,6 @@ namespace WebApi.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<RoomModel> Room { get; set; }
+        
     }
 }

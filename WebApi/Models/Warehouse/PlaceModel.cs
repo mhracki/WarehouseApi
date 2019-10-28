@@ -12,7 +12,7 @@ namespace WebApi.Models
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public virtual ShelfModel Shelf { get; set; }
+        public Guid ShelfId { get; set; }
         
 
 

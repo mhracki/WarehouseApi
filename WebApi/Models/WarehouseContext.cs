@@ -46,11 +46,18 @@ namespace WebApi.Models
             modelBuilder.Entity<ColumnModel>().HasData(new  { Id = cId, Name = "glowna",RoomId = roId });
             modelBuilder.Entity<RackModel>().HasData(new { Id = raId, Name = "1", Side = false, ColumnsId= cId });
             modelBuilder.Entity<ShelfModel>().HasData(new  { Id = shId, Name = "2", RackId= raId });
-            modelBuilder.Entity<PlaceModel>().HasData(new  { Id = pId, Name = "srodek",ShelfId=shId, RackId = raId, ColumnsId = cId, RoomId = roId, WarehouseId = wId });
+            modelBuilder.Entity<PlaceModel>().HasData(new  { Id = pId, Name = "srodek",ShelfId=shId  });
             modelBuilder.Entity<ItemModel>().HasData(new {
-                Id = iId, ItemName = "Przedmiot",
+                Id = iId,
+                ItemName = "Przedmiot",
                 Quantity =20,
                 WarehouseId = wId,
+                RoomId= roId,
+                ColumnId=cId,
+                RackId=raId,
+                ShelfId=shId,
+                PlaceId=pId,
+
                
 
             });

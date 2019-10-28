@@ -58,7 +58,18 @@ namespace WebApi.Controllers
                               a.Id,
                               a.ItemName,
                               a.Quantity,
+                              a.WarehouseId,
                               a.Warehouse,
+                              a.RoomId,
+                              a.Room,
+                              a.ColumnId,
+                              a.Column,
+                              a.RackId,
+                              a.Rack,
+                              a.ShelfId,
+                              a.Shelf,
+                              a.PlaceId,
+                              a.Place
                               
                           }).ToList();
 
@@ -100,6 +111,21 @@ namespace WebApi.Controllers
                 Id= id,
                 ItemName = model.ItemName,
                 Quantity = model.Quantity,
+                WarehouseId = model.WarehouseId,
+                Warehouse= model.Warehouse,
+                RoomId= model.RoomId,
+                Room=model.Room,
+                ColumnId=model.ColumnId,
+                Column=model.Column,
+                RackId=model.RackId,
+                Rack=model.Rack,
+                ShelfId=model.ShelfId,
+                Shelf=model.Shelf,
+                PlaceId=model.PlaceId,
+                Place=model.Place
+
+
+                
                
 
             };
@@ -150,9 +176,22 @@ namespace WebApi.Controllers
 
             var item = new ItemModel()
             {
+                Id = Guid.NewGuid(),
                 ItemName = model.ItemName,
                 Quantity = model.Quantity,
-                
+                WarehouseId = model.WarehouseId,
+               // Warehouse = model.Warehouse,
+                RoomId = model.RoomId,
+              //  Room = model.Room,
+                ColumnId = model.ColumnId,
+             //   Column = model.Column,
+                RackId = model.RackId,
+               // Rack = model.Rack,
+                ShelfId = model.ShelfId,
+               // Shelf = model.Shelf,
+                PlaceId = model.PlaceId,
+             //   Place = model.Place
+
 
             };
 
@@ -167,6 +206,116 @@ namespace WebApi.Controllers
 
                 throw ex;
             }
+        }
+        [HttpGet]
+        [Route("Warehouse")]
+        //GET : /api/Warehouse/warehouse
+        public ActionResult<IEnumerable<string>> GetWarehouse()
+        {
+         
+            var result = (from a in _context.Warehouse
+                          select new
+                          {
+                              a.Id,
+                              a.Name,
+                             
+                          }).ToList();
+
+            return Ok(result);
+                                             
+        }
+
+        [HttpGet("{warehouseId}")]
+        [Route("Room/{warehouseId}")]
+        //GET : /api/Warehouse/room/{id}
+        public ActionResult<IEnumerable<string>> GetRoom(Guid warehouseId)
+        {
+
+            var result = (from a in _context.Room.Where(x=>x.WarehouseId==warehouseId)
+                          select new
+                          {
+                              a.Id,
+                              a.Name,
+                              
+
+                          }).ToList();
+
+            return Ok(result);
+
+        }
+
+        [HttpGet("{roomId}")]
+        [Route("Column/{roomId}")]
+        //GET : /api/Warehouse/column/{id}
+        public ActionResult<IEnumerable<string>> GetColumn(Guid roomId)
+        {
+
+            var result = (from a in _context.Columns.Where(x => x.RoomId == roomId)
+                          select new
+                          {
+                              a.Id,
+                              a.Name,
+
+
+                          }).ToList();
+
+            return Ok(result);
+
+        }
+        [HttpGet("{columnId}")]
+        [Route("Rack/{columnId}")]
+        //GET : /api/Warehouse/rack/{id}
+        public ActionResult<IEnumerable<string>> GetRack(Guid columnId)
+        {
+
+            var result = (from a in _context.Rack.Where(x => x.ColumnsId == columnId)
+                          select new
+                          {
+                              a.Id,
+                              a.Name,
+                              a.Side
+
+
+                          }).ToList();
+
+            return Ok(result);
+
+        }
+        [HttpGet("{rackId}")]
+        [Route("Shelf/{rackId}")]
+        //GET : /api/Warehouse/shelf/{id}
+        public ActionResult<IEnumerable<string>> GetShelf(Guid rackId)
+        {
+
+            var result = (from a in _context.Shelf.Where(x => x.RackId == rackId)
+                          select new
+                          {
+                              a.Id,
+                              a.Name,
+
+
+                          }).ToList();
+
+            return Ok(result);
+
+        }
+        [HttpGet("{shelfId}")]
+        [Route("Place/{shelfId}")]
+        //GET : /api/Warehouse/place/{id}
+        public ActionResult<IEnumerable<string>> GetPlace(Guid shelfId)
+        {
+
+            var result = (from a in _context.Place.Where(x => x.ShelfId == shelfId)
+                          select new
+                          {
+                              a.Id,
+                              a.Name,
+
+
+                          }).ToList();
+
+            return Ok(result);
+
         }
     }
 }

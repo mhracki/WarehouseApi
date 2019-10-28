@@ -12,7 +12,7 @@ namespace WebApi.Models
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public virtual WarehouseModel Warehouse { get; set; }
-        public virtual ICollection<ColumnModel> Columns { get; set; }
+        public Guid WarehouseId { get; set; }
+   
     }
 }

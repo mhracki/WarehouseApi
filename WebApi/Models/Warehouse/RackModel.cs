@@ -13,7 +13,7 @@ namespace WebApi.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public bool Side { get; set; }
-        public virtual ColumnModel Columns { get; set; }
-        public virtual ICollection<ShelfModel> Shelf { get; set; }
+        public Guid ColumnsId { get; set; }
+       
     }
 }

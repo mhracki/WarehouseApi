@@ -12,9 +12,8 @@ namespace WebApi.Models
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public virtual RoomModel Room { get; set; }
-        public virtual ICollection<RackModel> Rack { get; set; }
-        public virtual ICollection<ItemModel> Item { get; set; }
+        public Guid RoomId { get; set; }
+       
 
     }
 }

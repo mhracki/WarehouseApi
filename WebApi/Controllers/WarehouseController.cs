@@ -66,6 +66,8 @@ namespace WebApi.Controllers
                               a.Column,
                               a.RackId,
                               a.Rack,
+                              a.SideId,
+                              a.Side,
                               a.ShelfId,
                               a.Shelf,
                               a.PlaceId,
@@ -118,7 +120,9 @@ namespace WebApi.Controllers
                 ColumnId=model.ColumnId,
                 Column=model.Column,
                 RackId=model.RackId,
-                Rack=model.Rack,
+                SideId = model.SideId,
+                Side = model.Side,
+                Rack =model.Rack,
                 ShelfId=model.ShelfId,
                 Shelf=model.Shelf,
                 PlaceId=model.PlaceId,
@@ -147,7 +151,7 @@ namespace WebApi.Controllers
         [HttpDelete("{id}")]
         //DELETE : /api/Warehouse/item/id
         [Route("DelItem/{id}")]
-        public async Task<IActionResult> Delete( int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
 
             var item = await _context.Item.FindAsync(id);
@@ -180,18 +184,12 @@ namespace WebApi.Controllers
                 ItemName = model.ItemName,
                 Quantity = model.Quantity,
                 WarehouseId = model.WarehouseId,
-               // Warehouse = model.Warehouse,
                 RoomId = model.RoomId,
-              //  Room = model.Room,
                 ColumnId = model.ColumnId,
-             //   Column = model.Column,
                 RackId = model.RackId,
-               // Rack = model.Rack,
+                SideId = model.SideId,
                 ShelfId = model.ShelfId,
-               // Shelf = model.Shelf,
                 PlaceId = model.PlaceId,
-             //   Place = model.Place
-
 
             };
 
@@ -208,8 +206,8 @@ namespace WebApi.Controllers
             }
         }
         [HttpGet]
-        [Route("Warehouse")]
-        //GET : /api/Warehouse/warehouse
+        [Route("Warehouse/get")]
+        //GET : /api/Warehouse/warehouse/get
         public ActionResult<IEnumerable<string>> GetWarehouse()
         {
          
@@ -225,9 +223,82 @@ namespace WebApi.Controllers
                                              
         }
 
+        [HttpPost]
+        [Route("Warehouse/post")]
+        //POST : /api/Warehouse/Warehouse/post
+        public async Task<Object> PostWarehause(WarehouseModel model)
+        {
+
+            var warehouse = new WarehouseModel()
+            {
+                Id = Guid.NewGuid(),
+                Name = model.Name,
+               
+            };
+
+            try
+            {
+                var result = await _context.Warehouse.AddAsync(warehouse);
+                await _context.SaveChangesAsync();
+                return Ok(warehouse);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        [HttpPut("{id}")]
+        //PUT : /api/Warehouse/putitem/id
+        [Route("warehouse/put/{id}")]
+        public async Task<IActionResult> PutWarehouse(Guid id, [FromBody]WarehouseModel model)
+        {
+
+            var warehouse = new WarehouseModel()
+            {
+                Id = id,
+                Name = model.Name,
+              
+            };
+
+            try
+            {
+                _context.Entry(warehouse).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return Ok(warehouse);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpDelete("{id}")]
+        //DELETE : /api/Warehouse/item/id
+        [Route("warehouse/delete/{id}")]
+        public async Task<IActionResult> DeleteWarehouse(Guid id)
+        {
+
+            var warehouse = await _context.Warehouse.FindAsync(id);
+            if (warehouse == null)
+            {
+                return NotFound();
+            }
+             
+            try
+            {
+                _context.Warehouse.Remove(warehouse);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [HttpGet("{warehouseId}")]
-        [Route("Room/{warehouseId}")]
-        //GET : /api/Warehouse/room/{id}
+        [Route("Room/get/{warehouseId}")]
+        //GET : /api/Warehouse/room/get/{id}
         public ActionResult<IEnumerable<string>> GetRoom(Guid warehouseId)
         {
 
@@ -245,8 +316,8 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{roomId}")]
-        [Route("Column/{roomId}")]
-        //GET : /api/Warehouse/column/{id}
+        [Route("Column/get/{roomId}")]
+        //GET : /api/Warehouse/column/get/{id}
         public ActionResult<IEnumerable<string>> GetColumn(Guid roomId)
         {
 
@@ -263,8 +334,8 @@ namespace WebApi.Controllers
 
         }
         [HttpGet("{columnId}")]
-        [Route("Rack/{columnId}")]
-        //GET : /api/Warehouse/rack/{id}
+        [Route("Rack/get/{columnId}")]
+        //GET : /api/Warehouse/rack/get/{id}
         public ActionResult<IEnumerable<string>> GetRack(Guid columnId)
         {
 
@@ -273,8 +344,7 @@ namespace WebApi.Controllers
                           {
                               a.Id,
                               a.Name,
-                              a.Side
-
+                            
 
                           }).ToList();
 
@@ -282,12 +352,30 @@ namespace WebApi.Controllers
 
         }
         [HttpGet("{rackId}")]
-        [Route("Shelf/{rackId}")]
-        //GET : /api/Warehouse/shelf/{id}
-        public ActionResult<IEnumerable<string>> GetShelf(Guid rackId)
+        [Route("Side/get/{rackId}")]
+        //GET : /api/Warehouse/side/get/{id}
+        public ActionResult<IEnumerable<string>> GetSide(Guid rackId)
         {
 
-            var result = (from a in _context.Shelf.Where(x => x.RackId == rackId)
+            var result = (from a in _context.Side.Where(x => x.RackId == rackId)
+                          select new
+                          {
+                              a.Id,
+                              a.Name,
+
+
+                          }).ToList();
+
+            return Ok(result);
+
+        }
+        [HttpGet("{sackId}")]
+        [Route("Shelf/get/{sideId}")]
+        //GET : /api/Warehouse/shelf/get/{id}
+        public ActionResult<IEnumerable<string>> GetShelf(Guid sideId)
+        {
+
+            var result = (from a in _context.Shelf.Where(x => x.SideId == sideId)
                           select new
                           {
                               a.Id,
@@ -300,8 +388,8 @@ namespace WebApi.Controllers
 
         }
         [HttpGet("{shelfId}")]
-        [Route("Place/{shelfId}")]
-        //GET : /api/Warehouse/place/{id}
+        [Route("Place/get/{shelfId}")]
+        //GET : /api/Warehouse/place/get/{id}
         public ActionResult<IEnumerable<string>> GetPlace(Guid shelfId)
         {
 

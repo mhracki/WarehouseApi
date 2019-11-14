@@ -12,7 +12,7 @@ namespace WebApi.Models
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public Guid RackId{ get; set; }
+        public Guid SideId{ get; set; }
         
     }
 }

@@ -7,12 +7,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.Models
 {
-    public class RackModel
+    public class SideModel
     {
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public Guid ColumnsId { get; set; }
-       
+        public Guid RackId { get; set; }
+
     }
 }

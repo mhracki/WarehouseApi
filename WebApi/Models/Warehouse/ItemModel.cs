@@ -21,6 +21,8 @@ namespace WebApi.Models
         public virtual ColumnModel Column { get; set; }
         public Guid RackId { get; set; }
         public virtual RackModel Rack { get; set; }
+        public Guid SideId { get; set; }
+        public virtual SideModel Side { get; set; }
         public Guid ShelfId { get; set; }
         public virtual ShelfModel Shelf { get; set; }
         public Guid PlaceId { get; set; }
